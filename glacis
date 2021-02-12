@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+
+class GlacisClient(object):
+
+
+    def __init__(self):
+        parser = argparse.ArgumentParser(description='The Glacis CLI client.')
+        parser.add_argument('command', help='Subcommand to run')
+        args = parser.parse_args(sys.argv[1:2])
+        if not hasattr(self, args.command):
+            print('Unrecognized command')
+            parser.print_help()
+            exit(1)
+        getattr(self, args.command)()
+
+
+    def status(self):
+        parser = argparse.ArgumentParser(description='Get status of Glacis.')
+        parser.add_argument('repository')
+        args = parser.parse_args(sys.argv[2:])
+        print('Getting status of repository \'{repository}\'.'.format(repository=args.repository))
+
+    def config(self):
+        parser = argparse.ArgumentParser(description='Manage Glacis configuration.')
+        parser.add_argument('setting')
+        parser.add_argument('value')
+        args = parser.parse_args(sys.argv[2:])
+        print('Updating configuration setting \'{setting}\' to \'{value}\'.'.format(setting=args.setting, value=args.value))
+
+    def extension(self):
+        parser = argparse.ArgumentParser(description='Manage Glacis extensions.')
+        parser.add_argument('extension_name')
+        parser.add_argument('action')
+        args = parser.parse_args(sys.argv[2:])
+        print('Performing action \'{action}\' for extenstion \'{extension}\'.'.format(action=args.action, extension=args.extension_name))
+
+    def execute(self):
+        parser = argparse.ArgumentParser(description='Execute commands against the Glacis internal API.')
+        parser.add_argument('command')
+        args = parser.parse_args(sys.argv[2:])
+        print('Executing the following command: \'{command}\'.'.format(command=args.command))
+   
+if __name__ == '__main__':
+    GlacisClient()
